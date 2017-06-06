@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    publicPath: '',
     filename: 'build.js'
   },
   module: {
@@ -52,11 +52,18 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins : [
+    new HtmlWebpackPlugin({
+      filename : 'index.html',
+      template : 'index.html'
+    })
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
+  module.exports.module.rules[0].options.extractCSS = true;
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
@@ -72,6 +79,16 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
+    }),
+        new ExtractTextPlugin("[name]-[hash].css"),
+    new HtmlWebpackPlugin({
+      filename : 'index.html',
+      template : 'index.html',
+      inject : true,
+      minify: {
+        removeComments: true,
+        removeAttributeQuotes: false
+      }
     })
   ])
 }
