@@ -17,4 +17,4 @@ $ npm install
 $ npm run dev
 ```
 
->modified by stepanowon@hotmail.com
+>stepanowon@hotmail.com
